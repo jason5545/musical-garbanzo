@@ -1,7 +1,7 @@
 #!/bin/bash
 # 此腳本適用於 Debian/Ubuntu 與 macOS 系統（不支援 Windows）。
 # 功能：
-#  1. 自動安裝 Tesseract OCR 及語言包 (繁體中文、日語、韓語) 與 GNU Parallel
+#  1. 自動安裝 Ghostscript、Tesseract OCR 及語言包 (繁體中文、日語、韓語) 與 GNU Parallel
 #  2. Debian/Ubuntu 系統會先透過 apt 安裝 python3.12-venv
 #  3. 使用 Python 3.12 建立名為 ocrmypdf 的虛擬環境，並在其中安裝 ocrmypdf
 #  4. 設定 alias ocr，可直接進入虛擬環境
@@ -9,20 +9,20 @@
 
 set -e
 
-# Debian/Ubuntu 系統安裝 Tesseract、語言包及 GNU Parallel
+# Debian/Ubuntu 系統安裝 Ghostscript、Tesseract、語言包及 GNU Parallel
 install_tesseract_debian() {
   echo "偵測到 Debian/Ubuntu 系統..."
   echo "更新套件清單中..."
   sudo apt-get update
-  echo "安裝 Tesseract OCR、語言包 (繁體中文、日語、韓語) 及 GNU Parallel..."
-  sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-tra tesseract-ocr-jpn tesseract-ocr-kor parallel
+  echo "安裝 Ghostscript、Tesseract OCR、語言包 (繁體中文、日語、韓語) 及 GNU Parallel..."
+  sudo apt-get install -y ghostscript tesseract-ocr tesseract-ocr-chi-tra tesseract-ocr-jpn tesseract-ocr-kor parallel
 }
 
-# macOS 系統安裝 Tesseract、語言包及 GNU Parallel（使用 Homebrew）
+# macOS 系統安裝 Ghostscript、Tesseract、語言包及 GNU Parallel（使用 Homebrew）
 install_tesseract_macos() {
   echo "偵測到 macOS 系統（使用 Homebrew）..."
-  echo "使用 Homebrew 安裝 Tesseract OCR 與 GNU Parallel..."
-  brew install tesseract parallel
+  echo "使用 Homebrew 安裝 Ghostscript、Tesseract OCR 與 GNU Parallel..."
+  brew install ghostscript tesseract parallel
   
   TESSDATA_DIR=$(brew --prefix)/share/tessdata
   echo "Tesseract 語言資料路徑：$TESSDATA_DIR"
@@ -34,13 +34,13 @@ install_tesseract_macos() {
   done
 }
 
-# 根據作業系統判斷 Tesseract 與 GNU Parallel 的安裝方式
+# 根據作業系統判斷 Ghostscript、Tesseract 與 GNU Parallel 的安裝方式
 if command -v apt-get >/dev/null 2>&1; then
   install_tesseract_debian
 elif command -v brew >/dev/null 2>&1; then
   install_tesseract_macos
 else
-  echo "無法自動判斷作業系統或不支援之套件管理工具，請手動安裝 Tesseract OCR、語言包及 GNU Parallel。"
+  echo "無法自動判斷作業系統或不支援之套件管理工具，請手動安裝 Ghostscript、Tesseract OCR、語言包及 GNU Parallel。"
   exit 1
 fi
 
