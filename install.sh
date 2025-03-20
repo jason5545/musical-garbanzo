@@ -64,26 +64,37 @@ pip install --upgrade pip
 pip install ocrmypdf
 
 # 設定 alias ocr 自動進入虛擬環境
-absolute_path="$(pwd)/ocrmypdf"
-alias_line="alias ocr='source ${absolute_path}/bin/activate'"
+# 使用 $HOME 路徑而非相對路徑，確保一致性
+install_dir="$HOME/ocrmypdf"
+# 如果當前目錄已經是個絕對路徑，則將虛擬環境移動到家目錄
+if [ "$(pwd)" != "$HOME" ] && [ -d "ocrmypdf" ]; then
+  echo "將虛擬環境移動到家目錄 ($HOME)..."
+  mv ocrmypdf "$HOME/"
+fi
+alias_line="alias ocr='source \$HOME/ocrmypdf/bin/activate'"
 echo "設定 alias: ${alias_line}"
 
 # 自動加入 alias 至 ~/.bashrc 與 ~/.zshrc（若存在）
 if [ -f "$HOME/.bashrc" ]; then
-  if ! grep -Fxq "$alias_line" "$HOME/.bashrc"; then
+  # 使用更寬鬆的 grep 檢查，只檢查是否有 ocr alias 的定義
+  if ! grep -q "alias ocr=" "$HOME/.bashrc"; then
     echo "$alias_line" >> "$HOME/.bashrc"
     echo "已新增 alias 至 ~/.bashrc"
   else
-    echo "alias 已存在於 ~/.bashrc"
+    # 替換舊的 alias 為新的
+    sed -i "s|alias ocr=.*|${alias_line}|" "$HOME/.bashrc"
+    echo "已更新 ~/.bashrc 中的 alias"
   fi
 fi
 
 if [ -f "$HOME/.zshrc" ]; then
-  if ! grep -Fxq "$alias_line" "$HOME/.zshrc"; then
+  if ! grep -q "alias ocr=" "$HOME/.zshrc"; then
     echo "$alias_line" >> "$HOME/.zshrc"
     echo "已新增 alias 至 ~/.zshrc"
   else
-    echo "alias 已存在於 ~/.zshrc"
+    # 替換舊的 alias 為新的
+    sed -i "s|alias ocr=.*|${alias_line}|" "$HOME/.zshrc"
+    echo "已更新 ~/.zshrc 中的 alias"
   fi
 fi
 
@@ -92,4 +103,13 @@ mkdir -p output
 echo "已建立 output 目錄"
 
 echo "全部安裝完成！"
-echo "日後若要啟動虛擬環境，可直接執行： ocr （記得重新載入設定檔）"
+echo "若要立即啟用 alias，請執行："
+echo "  source ~/.bashrc  # 若使用 bash"
+echo "  source ~/.zshrc   # 若使用 zsh"
+echo "日後若要啟動虛擬環境，可直接執行： ocr"
+
+# 嘗試自動重新載入 bashrc（僅供參考，部分環境可能不支援）
+if [ -n "$BASH" ]; then
+  source "$HOME/.bashrc" 2>/dev/null || true
+  echo "已嘗試自動重新載入 ~/.bashrc"
+fi
