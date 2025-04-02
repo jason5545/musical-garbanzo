@@ -13,13 +13,13 @@
 在終端機中執行以下命令：
 
 ```bash
-curl -sSL https://github.com/jasl.sh45/musical-garbanzo/raw/refs/heads/main/install.sh | sudo bash
+curl -sSL https://github.com/jason5545/musical-garbanzo/raw/refs/heads/main/install.sh | sudo bash
 ```
 
 或
 
 ```bash
-wget -qO- https://github.com/jasl.sh45/musical-garbanzo/raw/refs/heads/main/install.sh | sudo bash
+wget -qO- https://github.com/jason5545/musical-garbanzo/raw/refs/heads/main/install.sh | sudo bash
 ```
 
 ### 安裝腳本功能
