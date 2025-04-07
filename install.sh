@@ -71,7 +71,7 @@ if [ "$(pwd)" != "$HOME" ] && [ -d "ocrmypdf" ]; then
   echo "將虛擬環境移動到家目錄 ($HOME)..."
   mv ocrmypdf "$HOME/"
 fi
-alias_line="alias ocr='source \$HOME/ocrmypdf/bin/activate'"
+alias_line="alias ocr='source $HOME/ocrmypdf/bin/activate'"
 echo "設定 alias: ${alias_line}"
 
 # 自動加入 alias 至 ~/.bashrc 與 ~/.zshrc（若存在）
