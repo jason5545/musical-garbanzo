@@ -45,6 +45,21 @@ wget -qO- https://github.com/jason5545/musical-garbanzo/raw/refs/heads/main/inst
 ocrmypdf --language chi_tra+jpn+kor input.pdf output/output.pdf
 ```
 
+3. 使用 GNU Parallel 批次處理多個 PDF 檔案，例如：
+
+```bash
+parallel --tag -j 2 ocrmypdf --output-type pdf --optimize 01 -l eng+kor --oversample 600  --redo-ocr '{}' 'output/{}' ::: *.pdf
+```
+
+此命令會以 2 個並行處理程序進行 OCR，處理目前目錄下所有的 PDF 檔案，並將結果存放在 output 目錄中。參數說明：
+- `--tag`：在輸出中顯示檔案名稱
+- `-j 2`：同時處理 2 個檔案
+- `--output-type pdf`：輸出 PDF 格式
+- `--optimize 01`：使用第 1 級優化
+- `-l eng+kor`：使用英文和韓文識別
+- `--oversample 600`：提高採樣率至 600 DPI
+- `--redo-ocr`：重新處理已有 OCR 的檔案
+
 ## 系統需求
 
 - Debian/Ubuntu Linux 或 macOS
