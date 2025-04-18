@@ -8,19 +8,21 @@
 
 ### 安裝步驟
 
-**注意：** 安裝過程中需要使用 sudo 權限來安裝系統相依套件。
+**注意：** 安裝過程中腳本將會在需要時自動請求 sudo 權限來安裝系統相依套件。
 
 在終端機中執行以下命令：
 
 ```bash
-curl -sSL https://github.com/jason5545/musical-garbanzo/raw/refs/heads/main/install.sh | sudo bash
+curl -sSL https://github.com/jason5545/musical-garbanzo/raw/refs/heads/main/install.sh | bash
 ```
 
 或
 
 ```bash
-wget -qO- https://github.com/jason5545/musical-garbanzo/raw/refs/heads/main/install.sh | sudo bash
+wget -qO- https://github.com/jason5545/musical-garbanzo/raw/refs/heads/main/install.sh | bash
 ```
+
+**重要：** 請勿使用 `sudo bash` 來執行整個腳本，否則 `ocr` 別名（alias）會被設定到 root 使用者的設定檔中，而非您的使用者設定檔，導致無法正常使用該別名。腳本已針對需要管理員權限的命令添加 `sudo` 前綴。
 
 ### 安裝腳本功能
 
@@ -59,8 +61,8 @@ ocrmypdf --language chi_tra+jpn+kor input.pdf output/output.pdf
 
 ## 注意事項
 
-- 安裝過程需要管理員權限（sudo）
-- 腳本會安裝系統相依套件，需要有 sudo 權限才能執行
+- 安裝過程需要管理員權限（sudo），但腳本會自動在需要時請求權限
+- 腳本會安裝系統相依套件
 - 首次執行後，建議重新載入您的終端配置：
   - Bash: `source ~/.bashrc`
   - Zsh: `source ~/.zshrc` 
